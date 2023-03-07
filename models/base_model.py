@@ -12,7 +12,9 @@ class BaseModel:
     A base model class that defines all attributes and methods for other objects and classes to inherit from"""
     def __init__(self):
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
+        #self.created_at = datetime.datetime.now()
+        #self.created_at = datetime.datetime.now() will fail because of the method you used to import the datetime module. That is why I changed tweaked it a little
+        self.created_at = datetime.now()
         self.updated_at = self.created_at
 
     def __str__(self):
