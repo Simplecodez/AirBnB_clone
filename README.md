@@ -14,3 +14,18 @@ The Commandline Interpreter can be started by executing the command ./console.py
 | tests	|  | Contains test files for AirBnb Clone|
 | models | base_model.py | Defines all common attributes/methods for other classes |
 |  |  | To be updated soon |
+
+## Using the console:
+
+From project directory: `./console.py`
+
+## Implemented console commands:
+| command | functionality |
+| --- | --- |
+| quit | Same as default, quits interpreter. |
+| EOF | (Ctrl + d) to quit |
+| create | Creates a new object of the specified class, and returns its id. |
+| show | Prints information about the specified object and its attributes. |
+| destroy | Deletes object of specified id. |
+| all | With no args, shows all objects, or all objects of a specified type. |
+| update | Adds or updates the specified attribute for the specified object. |
