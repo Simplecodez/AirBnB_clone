@@ -27,19 +27,26 @@ class BaseModel:
             #self.created_at = datetime.datetime.now()
             #self.created_at = datetime.datetime.now() will fail because of the method you used to import the datetime module. That is why I changed tweaked it a little
             self.created_at = datetime.now()
-            self.updated_at = self.created_at
-            storage.new()
+            self.updated_at = datetime.now()
+            storage.new(self)
 
     def __str__(self):
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
+        """Returns a string representation of the instance"""
+        cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
-        self.updated_at = datetime.datetime.now()
+        """Updates updated_at with current time when instance is changed"""
+        from models import storage
+        self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        result_dict = self.__dict__.copy()
-        result_dict["__class__"] = type(self).__name__
-        result_dict["created_at"] = self.created_at.isoformat()
-        result_dict["updated_at"] = self.updated_at.isoformat()
-        return result_dict
+        """Convert instance into dict format"""
+        dictionary = {}
+        dictionary.update(self.__dict__)
+        dictionary.update({'__class__':
+                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+        dictionary['created_at'] = self.created_at.isoformat()
+        dictionary['updated_at'] = self.updated_at.isoformat()
+        return dictionary
