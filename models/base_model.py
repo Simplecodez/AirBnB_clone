@@ -1,101 +1,84 @@
 #!/usr/bin/python3
 """ 0x00. AirBnB clone - The console """
-import json
-from os import path
+from uuid import uuid4
+from datetime import datetime
+from models import storage
 
 
-class FileStorage:
-    """ Class meant to manage JSON file storage for `BaseModel` and its child
-        classes.
+class BaseModel:
+    """Defines all common attributes/methods for `BaseModel` and its subclasses.
+
+        Use of kwargs is currently very brittle and assumes no use of *args,
+        and either empty **kwargs, or a dictionary that contains a key for every
+        instance attribute named in `__init__`, and corresponding values of the
+        correct type and formatting.
 
         Attributes:
-        __file_path (str): default path to save JSON serializations to file
-        __objects (dict): dict of items with `BaseModel` and its child classes
-            as values, and '<object class name>.<object.id>' as keys
-
-        Project tasks:
-        5. Store first object
+            id (str): a unique UUID that is assigned when an instance is created
+            created_at (datetime.datetime): the current datetime when an instance
+                is created
+            updated_at (datetime.datetime): the current datetime when an instance
+                is created, but updated everytime object is changed
 
     """
-    __file_path = "file.json"
-    __objects = {}
+    def __init__(self, *args, **kwargs):
+        """`BaseModel` class constructor.
 
-    def __init__(self):
-        pass
-
-    def all(self):
-        """Returns the dictionary __objects.
-           Returns:
-               __objects (dict): dict of items with `BaseModel` and its child
-                classes as values, and '<object class name>.<object.id>' as
-                    keys
-
-            Project tasks:
-                5. Store first object
+                Project tasks:
+                    3. BaseModel
+                    4. Create BaseModel from dictionary
 
         """
-        return self.__objects
-
-    def new(self, obj):
-        """Sets a new object as value in __objects with key
-           '<object class name>.<object.id>'
-
-           Args:
-           obj (BaseModel or child): BaseModel-derived object to be added to
-           __objects
-
-           Project tasks:
-           5. Store first object
-
-        """
-        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
-
-    def save(self):
-        """Serializes __objects to the JSON file (path: __file_path)
-           Project tasks:
-           5. Store first object
-
-        """
-        json_dict = {}
-        for key, value in self.__objects.items():
-            json_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w', encoding='utf-8') as file:
-            file.write(json.dumps(json_dict))
-
-    def reload(self):
-        """Deserializes the JSON file at __file_path into  __objects, if it
-           exists; otherwise, no exception is raised.
-
-           Project tasks:
-           5. Store first object
-
-        """
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.amenity import Amenity
-        from models.city import City
-        from models.place import Place
-        from models.review import Review
-        from models.state import State
-
-        all_class = {
-            "BaseModel": BaseModel,
-            "User": User,
-            "Amenity": Amenity,
-            "City": City,
-            "Place": Place,
-            "Review": Review,
-            "State": State
-        }
-
-        if path.exists(self.__file_path) is True:
-            with open(self.__file_path, 'r', encoding='utf-8') as file:
-                content = file.read()
-                if content is not None and content != '':
-                    json_dict = json.loads(content)
-                    for key, value in json_dict.items():
-                        class_name = key.split('.')[0]
-                        self.__objects[key] = all_class[class_name](**value)
+        if kwargs:
+            iso_fmt = '%Y-%m-%dT%H:%M:%S.%f'
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    if key == "created_at" or key == "updated_at":
+                        self.__dict__[key] = datetime.strptime(value, iso_fmt)
+                    else:
+                        self.__dict__[key] = value
 
         else:
-            pass
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+            storage.new(self)
+
+    def __str__(self):
+        """Returns the string representation of BaseModel.
+
+                Returns:
+                     '[<class name>] (<self.id>) <self.__dict__>'
+
+                Project tasks:
+                    3. BaseModel
+        """
+
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+
+    def save(self):
+        """Updates updated_at with the current datetime. Save updates to JSON
+                serialization.
+
+                Project tasks:
+                    3. BaseModel
+                    5. Store first object
+
+        """
+        self.updated_at = datetime.now()
+        storage.save()
+
+    def to_dict(self):
+        """Returns a dictionary containing all keys/values of __dict__
+                of the instance, plus `__class__`, `created-at`, and `updated_at`.
+
+                Project tasks:
+                    3. BaseModel
+
+        """
+        myresult = self.__dict__.copy()
+        myresult["__class__"] = self.__class__.__name__
+        myresult["created_at"] = self.created_at.isoformat()
+        myresult["updated_at"] = self.updated_at.isoformat()
+
+        return myresult

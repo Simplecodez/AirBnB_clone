@@ -1,51 +1,101 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb clone"""
+""" 0x00. AirBnB clone - The console """
 import json
+from os import path
 
 
 class FileStorage:
-    """This class manages storage of hbnb models in JSON format"""
-    __file_path = 'file.json'
+    """ Class meant to manage JSON file storage for `BaseModel` and its child
+        classes.
+
+        Attributes:
+        __file_path (str): default path to save JSON serializations to file
+        __objects (dict): dict of items with `BaseModel` and its child classes
+            as values, and '<object class name>.<object.id>' as keys
+
+        Project tasks:
+        5. Store first object
+
+    """
+    __file_path = "file.json"
     __objects = {}
 
+    def __init__(self):
+        pass
+
     def all(self):
-        """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        """Returns the dictionary __objects.
+           Returns:
+               __objects (dict): dict of items with `BaseModel` and its child
+                classes as values, and '<object class name>.<object.id>' as
+                    keys
+
+            Project tasks:
+                5. Store first object
+
+        """
+        return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        """Sets a new object as value in __objects with key
+           '<object class name>.<object.id>'
+
+           Args:
+           obj (BaseModel or child): BaseModel-derived object to be added to
+           __objects
+
+           Project tasks:
+           5. Store first object
+
+        """
+        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
 
     def save(self):
-        """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        """Serializes __objects to the JSON file (path: __file_path)
+           Project tasks:
+           5. Store first object
+
+        """
+        json_dict = {}
+        for key, value in self.__objects.items():
+            json_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w', encoding='utf-8') as file:
+            file.write(json.dumps(json_dict))
 
     def reload(self):
-        """Loads storage dictionary from file"""
+        """Deserializes the JSON file at __file_path into  __objects, if it
+           exists; otherwise, no exception is raised.
+
+           Project tasks:
+           5. Store first object
+
+        """
         from models.base_model import BaseModel
         from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
         from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
         from models.review import Review
+        from models.state import State
 
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
+        all_class = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "Amenity": Amenity,
+            "City": City,
+            "Place": Place,
+            "Review": Review,
+            "State": State
+        }
+
+        if path.exists(self.__file_path) is True:
+            with open(self.__file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+                if content is not None and content != '':
+                    json_dict = json.loads(content)
+                    for key, value in json_dict.items():
+                        class_name = key.split('.')[0]
+                        self.__objects[key] = all_class[class_name](**value)
+
+        else:
             pass
-
