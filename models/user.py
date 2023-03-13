@@ -1,14 +1,19 @@
 #!/usr/bin/python3
-"""
-The class User should inherit BaseModel
-"""
+""" 0x00. AirBnB clone - The console """
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
+    """Defines attributes for `User`.
+
+    Attributes:
+        email (str)
+        password (str)
+        first_name (str)
+        last_name (str)
+
     """
-    Declaring the the class name
-    """
+
     email = ""
     password = ""
     first_name = ""

@@ -1,8 +1,13 @@
 #!/usr/bin/python3
-"""A module containing the State model"""
-from models.base_model import BaseModel
+""" 0x00. AirBnB clone - The console """
+from .base_model import BaseModel
 
 
 class State(BaseModel):
-    """Implements the State model for any state object"""
+    """Defines attributes for `State`.
+
+    Attributes:
+        name (str)
+    """
+
     name = ""

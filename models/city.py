@@ -1,9 +1,15 @@
 #!/usr/bin/python3
-"""Contains the City model"""
+""" 0x00. AirBnB clone - The console """
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """Implements the City class"""
+    """Defines attributes for `City`.
+
+    Attributes:
+        state_id (str)
+        name (str)
+    """
+
     state_id = ""
     name = ""

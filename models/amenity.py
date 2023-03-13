@@ -1,8 +1,13 @@
 #!/usr/bin/python3
-"""Contains the Amenity model"""
-from models.base_model import BaseModel
+""" 0x00. AirBnB clone - The console """
+from .base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """Implements the Amenity model"""
+    """Defines attributes for `Amenity`.
+
+    Attributes:
+        name (str)
+    """
+
     name = ""

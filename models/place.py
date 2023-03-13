@@ -1,24 +1,25 @@
 #!/usr/bin/python3
-"""Contains the Place model"""
-from models.base_model import BaseModel
+""" 0x00. AirBnB clone - The console """
+from .base_model import BaseModel
 
 
 class Place(BaseModel):
+    """Defines attributes for `Place`.
+
+    Attributes:
+        city_id (str)
+        user_id (str)
+        name (str)
+        description (str)
+        number_rooms (int)
+        number_bathrooms (int)
+        max_guest (int)
+        price_by_night (int)
+        latitude (float)
+        longitude (float)
+        amenity_ids (list of strings)
     """
-    Implements the Place model
-    Args:
-        city_id (str): The City id.
-        user_id (str): The User id.
-        name (str): The name of the place.
-        description (str): The description of the place.
-        number_rooms (int): The number of rooms of the place.
-        number_bathrooms (int): The number of bathrooms of the place.
-        max_guest (int): The maximum number of guests of the place.
-        price_by_night (int): The price by night of the place.
-        latitude (float): The latitude of the place.
-        longitude (float): The longitude of the place.
-        amenity_ids (list): A list of Amenity ids.
-    """
+
     city_id = ""
     user_id = ""
     name = ""

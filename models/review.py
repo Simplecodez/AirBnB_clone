@@ -1,14 +1,17 @@
 #!/usr/bin/python3
-"""
-The class Review should inherit BaseModel
-"""
-from models.base_model import BaseModel
+""" 0x00. AirBnB clone - The console """
+from .base_model import BaseModel
 
 
 class Review(BaseModel):
+    """Defines attributes for `Review`.
+
+    Attributes:
+        place_id (str)
+        user_id (str)
+        text (str)
     """
-    All attrbutes are empty
-    """
+
     place_id = ""
     user_id = ""
     text = ""
