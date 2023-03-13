@@ -41,7 +41,6 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key not in ('created_at', 'updated_at', '__class__'):
                     self.__dict__[key] = value
-        print(self.__dict__)
 
         def time_conversor(obj):
             """ Define time conversor
