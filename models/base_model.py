@@ -41,6 +41,7 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key not in ('created_at', 'updated_at', '__class__'):
                     self.__dict__[key] = value
+<<<<<<< HEAD
 
         def time_conversor(obj):
             """ Define time conversor
@@ -49,6 +50,8 @@ class BaseModel:
             if type(obj) in [datetime]:
                 obj = obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
             return datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
+=======
+>>>>>>> 083488621a42692a7af36c4bc4c7125a408280df
 
     def __str__(self):
         """Returns the string representation of BaseModel.
