@@ -42,14 +42,6 @@ class BaseModel:
                 if key not in ('created_at', 'updated_at', '__class__'):
                     self.__dict__[key] = value
 
-        def time_conversor(obj):
-            """ Define time conversor
-                that return new time object
-            """
-            if type(obj) in [datetime]:
-                obj = obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
-            return datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
-
     def __str__(self):
         """Returns the string representation of BaseModel.
 
