@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 
-class BaseModel:
+class BaseModel():
     """Defines all common attributes/methods for `BaseModel` and its subclasses.
 
     Use of kwargs is currently very brittle and assumes no use of *args,
@@ -41,17 +41,6 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key not in ('created_at', 'updated_at', '__class__'):
                     self.__dict__[key] = value
-<<<<<<< HEAD
-
-        def time_conversor(obj):
-            """ Define time conversor
-                that return new time object
-            """
-            if type(obj) in [datetime]:
-                obj = obj.strftime('%Y-%m-%dT%H:%M:%S.%f')
-            return datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
-=======
->>>>>>> 083488621a42692a7af36c4bc4c7125a408280df
 
     def __str__(self):
         """Returns the string representation of BaseModel.
