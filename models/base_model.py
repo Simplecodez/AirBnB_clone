@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 
-class BaseModel:
+class BaseModel():
     """Defines all common attributes/methods for `BaseModel` and its subclasses.
 
     Use of kwargs is currently very brittle and assumes no use of *args,
